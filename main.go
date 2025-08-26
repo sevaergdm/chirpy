@@ -30,6 +30,7 @@ type User struct {
 	HashedPassword string    `json:"hashed_password"`
 	Token          string    `json:"token"`
 	RefreshToken   string    `json:"refresh_token"`
+	IsChirpyRed    bool      `json:"is_chirpy_red"`
 }
 
 func (cfg *apiConfig) middlewareMetricsInc(next http.Handler) http.Handler {
@@ -88,6 +89,7 @@ func main() {
 	mux.HandleFunc("POST /api/revoke", apiCfg.handlerRevoke)
 	mux.HandleFunc("PUT /api/users", apiCfg.handlerUserUpdate)
 	mux.HandleFunc("DELETE /api/chirps/{chirpID}", apiCfg.handlerDeleteChirp)
+	mux.HandleFunc("POST /api/polka/webhooks", apiCfg.handlerUserUpgrade)
 
 	server := &http.Server{
 		Handler: mux,

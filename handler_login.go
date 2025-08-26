@@ -55,7 +55,7 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 	refreshTokenParams := database.CreateRefreshTokenParams{
 		Token:     refreshToken,
 		UserID:    user.ID,
-		ExpiresAt: time.Time.Add(time.Now().UTC(), time.Duration(60 * 24 * time.Hour)),
+		ExpiresAt: time.Time.Add(time.Now().UTC(), time.Duration(60*24*time.Hour)),
 	}
 
 	dbRefreshToken, err := cfg.dbQueries.CreateRefreshToken(req.Context(), refreshTokenParams)
@@ -68,6 +68,7 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 			Email:        user.Email,
 			Token:        token,
 			RefreshToken: dbRefreshToken.Token,
+			IsChirpyRed:  user.IsChirpyRed,
 		},
 	})
 }

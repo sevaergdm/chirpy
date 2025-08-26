@@ -12,7 +12,7 @@ func (cfg *apiConfig) handlerCreateUser(w http.ResponseWriter, req *http.Request
 
 	type parameters struct {
 		Password string `json:"password"`
-		Email string `json:"email"`
+		Email    string `json:"email"`
 	}
 
 	var params parameters
@@ -30,19 +30,20 @@ func (cfg *apiConfig) handlerCreateUser(w http.ResponseWriter, req *http.Request
 	}
 
 	user, err := cfg.dbQueries.CreateUser(req.Context(), database.CreateUserParams{
-		Email: params.Email,
+		Email:          params.Email,
 		HashedPassword: hashedPassword,
 	})
 	if err != nil {
 		respondWithError(w, 400, "Couldn't create user", err)
 		return
 	}
-	
+
 	userStruct := User{
-		ID: user.ID,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
-		Email: user.Email,
+		ID:          user.ID,
+		CreatedAt:   user.CreatedAt,
+		UpdatedAt:   user.UpdatedAt,
+		Email:       user.Email,
+		IsChirpyRed: user.IsChirpyRed,
 	}
 
 	respondWithJSON(w, http.StatusCreated, userStruct)
